@@ -1,5 +1,3 @@
-import pickle
-
 class TaskClass:
 	def __init__(self, activity):
 		self.activity = activity
