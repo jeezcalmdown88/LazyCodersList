@@ -186,7 +186,7 @@ class REPLClass:
 						if activity != "":
 							global_userlist.current_user.subject_list[index].add_task(' '.join(args))
 					else:
-						print("Invalid index.")
+						print("Invalid subject index.")
 				else:
 					# Add to Today's tasks
 					activity = ' '.join(args)
@@ -287,6 +287,41 @@ class REPLClass:
 				else:
 					print("Index should be a number.")
 
+		elif command in ["copy", "cp", "."]:
+			# copy 0 0
+			if len(args) == 2:
+				if args[0].isnumeric():
+					subject_index = int(args[0])
+					if subject_index in range(len(global_userlist.current_user.subject_list)):
+						if args[1].isnumeric():
+							task_index = int(args[1])
+							if task_index in range(len(global_userlist.current_user.subject_list[subject_index].task_list)):
+								global_userlist.current_user.today_tasks.add_task(global_userlist.current_user.subject_list[subject_index].task_list[task_index].activity)
+							else:
+								print("Invalid task index.")
+
+					else:
+						print("Invalid subject index.")
+
+			# copy 1 0 2
+			elif len(args) == 3:
+				if args[0].isnumeric():
+					from_index = int(args[0])
+					if from_index in range(len(global_userlist.current_user.subject_list)):
+						if args[1].isnumeric():
+							task_index = int(args[1])
+							if task_index in range(len(global_userlist.current_user.subject_list[from_index].task_list)):
+								if args[2].isnumeric():
+									to_index = int(args[2])
+									if to_index in range(len(global_userlist.current_user.subject_list)):
+										global_userlist.current_user.subject_list[to_index].add_task(global_userlist.current_user.subject_list[from_index].task_list[task_index].activity)
+									else:
+										print("Invalid to-list index.")
+							else:
+								print("Invalid task index.")
+					else:
+						print("Invalid from-list index.")
+
 		elif command == "#":
 			pass
 
@@ -361,4 +396,5 @@ def main():
 	while repl.admin_running:
 		admin_interface()
 
+		
 main()
